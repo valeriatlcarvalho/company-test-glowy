@@ -7,10 +7,10 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Badge extends Vue {
-  @Prop() private type: string;
+  @Prop({ default: '', required: true }) private type: string;
 
   get typeClass() {
-    return this.type.toLowerCase();
+    return this.type ? this.type.toLowerCase() : '';
   }
 }
 </script>
@@ -20,8 +20,8 @@ span {
   background: transparent;
   border-radius: 5px;
   color: #ffffff;
-  font-size: 0.9rem;
-  padding: 5px;
+  font-size: 0.8rem;
+  padding: 2px 5px;
 
   & + & {
     margin-left: 5px;

@@ -16,19 +16,11 @@ import Pokemon from '../components/Pokemon.vue';
 const QUERY_POKEMONS = gql`{
   pokemons(first: 151) {
     id
-    number
     name
-    weight {
-      maximum
-      minimum
-    }
-    height {
-      maximum
-      minimum
-    }
-    classification
+    number
     types
-    resistant
+    maxHP
+    maxCP
     attacks {
       fast {
         name
@@ -41,20 +33,6 @@ const QUERY_POKEMONS = gql`{
         damage
       }
     }
-    weaknesses
-    fleeRate
-    maxCP
-    evolutions {
-      id
-      number
-      name
-    }
-    evolutionRequirements {
-      amount
-      name
-    }
-    maxHP
-    image
   }
 }`;
 

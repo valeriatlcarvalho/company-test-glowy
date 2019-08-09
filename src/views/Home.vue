@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-    <Pokemons />
+    <Pokedex />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Pokemons from '@/containers/Pokemons.vue'; // @ is an alias to /src
+import Pokedex from '@/containers/Pokedex.vue'; // @ is an alias to /src
 
 @Component({
   components: {
-    Pokemons,
+    Pokedex,
   },
 })
 export default class Home extends Vue {}

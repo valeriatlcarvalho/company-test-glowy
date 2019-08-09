@@ -1,85 +1,79 @@
 <template>
-  <div class="pokemon-card" :class="frontHidden ? 'flip-container flip' : 'flip-container'">
-    <div class="pokemon-card-front" @click="openDetails()">
-      <div class="pokemon-card-front-content">
-        <img :src="`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.number}.png`" />
-        <div class="pokemon-card-front-effect pokemon-card-front-effect-first-layer"></div>
-        <div class="pokemon-card-front-effect pokemon-card-front-effect-second-layer"></div>
-      </div>
-      <div class="pokemon-card-front-footer">
-        <div class="pokemon-card-front-footer-tab">
-          <strong class="pokemon-card-front-footer-tab-number">#{{pokemon.number}}</strong>
+  <div class="pokemon-card" :class="frontHidden ? 'flipped' : ''">
+    <div class="flipper">
+      <div class="pokemon-card-front" @click="frontHidden = true">
+        <div class="pokemon-card-front-content">
+          <img :src="`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.number}.png`" />
+          <div class="pokemon-card-front-effect pokemon-card-front-effect-first-layer"></div>
+          <div class="pokemon-card-front-effect pokemon-card-front-effect-second-layer"></div>
         </div>
-        <strong class="pokemon-card-front-footer-name">{{pokemon.name}}</strong>
-        <div class="pokemon-card-front-footer-types">
-          <Badge
-            v-for="type in pokemon.types"
-            :key="`${pokemon.id}-${type}`"
-            :type="type"
-          ></Badge>
-        </div>
-      </div>
-    </div>
-
-    <div class="pokemon-card-back">
-      <div class="pokemon-card-back-info">
-        <div class="pokemon-card-back-info-box">
-          <span class="pokemon-card-back-info-box-label">MAX HP</span>
-          <span class="pokemon-card-back-info-box-value">{{pokemon.maxHP}}</span>
-        </div>
-        <div class="pokemon-card-back-info-box">
-          <span class="pokemon-card-back-info-box-label">MAX CP</span>
-          <span class="pokemon-card-back-info-box-value">{{pokemon.maxCP}}</span>
+        <div class="pokemon-card-front-footer">
+          <div class="pokemon-card-front-footer-tab">
+            <strong class="pokemon-card-front-footer-tab-number">#{{pokemon.number}}</strong>
+          </div>
+          <strong class="pokemon-card-front-footer-name">{{pokemon.name}}</strong>
+          <div class="pokemon-card-front-footer-types">
+            <Badge
+              v-for="type in pokemon.types"
+              :key="pokemon.id + type"
+              :type="type"
+            ></Badge>
+          </div>
         </div>
       </div>
 
-      <div class="pokemon-card-back-attack">
-        <h2 class="pokemon-card-back-attack-header-title">Fast Attacks</h2>
-        <table class="pokemon-card-back-attack-table">
-          <tr>
-            <th align="left">Attack</th>
-            <th>Type</th>
-            <th>Power</th>
-          </tr>
-          <tr
-            v-for="attack in pokemon.attacks.fast"
-            :key="attack"
-          >
-            <td align="left">{{attack.name}}</td>
-            <td>
-              <Badge
-                v-for="type in attack.types"
-                :key="`${attack.name}-${type}`"
-                :type="type"
-              ></Badge>
-            </td>
-            <td>{{attack.damage}}</td>
-          </tr>
-        </table>
-      </div>
-      <div class="pokemon-card-back-attack">
-        <h2 class="pokemon-card-back-attack-header-title">Special Attacks</h2>
-        <table class="pokemon-card-back-attack-table">
-          <tr>
-            <th align="left">Attack</th>
-            <th>Type</th>
-            <th>Power</th>
-          </tr>
-          <tr
-            v-for="attack in pokemon.attacks.special"
-            :key="attack"
-          >
-            <td align="left">{{attack.name}}</td>
-            <td>
-              <Badge
-                v-for="type in attack.types"
-                :key="`${attack.name}-${type}`"
-                :type="type"
-              ></Badge>
-            </td>
-            <td>{{attack.damage}}</td>
-          </tr>
-        </table>
+      <div class="pokemon-card-back" @click="frontHidden = false">
+        <div class="pokemon-card-back-info">
+          <div class="pokemon-card-back-info-box">
+            <span class="pokemon-card-back-info-box-label">MAX HP</span>
+            <span class="pokemon-card-back-info-box-value">{{pokemon.maxHP}}</span>
+          </div>
+          <div class="pokemon-card-back-info-box">
+            <span class="pokemon-card-back-info-box-label">MAX CP</span>
+            <span class="pokemon-card-back-info-box-value">{{pokemon.maxCP}}</span>
+          </div>
+        </div>
+
+        <div class="pokemon-card-back-attack">
+          <h2 class="pokemon-card-back-attack-header-title">Fast Attacks</h2>
+          <table class="pokemon-card-back-attack-table">
+            <tr>
+              <th align="left">Attack</th>
+              <th>Type</th>
+              <th>Power</th>
+            </tr>
+            <tr
+              v-for="attack in pokemon.attacks.fast"
+              :key="'attack-fast' + attack.name + attack.type + attack.damage"
+            >
+              <td align="left">{{attack.name}}</td>
+              <td>
+                <Badge :type="attack.type"></Badge>
+              </td>
+              <td>{{attack.damage}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="pokemon-card-back-attack">
+          <h2 class="pokemon-card-back-attack-header-title">Special Attacks</h2>
+          <table class="pokemon-card-back-attack-table">
+            <tr>
+              <th align="left">Attack</th>
+              <th>Type</th>
+              <th>Power</th>
+            </tr>
+            <tr
+              v-for="attack in pokemon.attacks.special"
+              :key="'attack-special' + attack.name + attack.type + attack.damage"
+            >
+              <td align="left">{{attack.name}}</td>
+              <td>
+                <Badge :type="attack.type"></Badge>
+              </td>
+              <td>{{attack.damage}}</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -93,7 +87,7 @@ import Badge from './Badge.vue';
 
 
 // const QUERY_DETAIL = gql`{
-//   query SearchByPokemon($id: id!, $name: name!) {
+//   query SearchByPokemon($id: String!, $name: String!) {
 //     pokemon(id: $id, name: $name) {
 //       maxHP
 //       maxCP
@@ -117,35 +111,29 @@ export default Vue.extend({
   components: {
     Badge,
   },
+  data: () => ({
+    frontHidden: false,
+  }),
   props: {
     pokemon: {
       type: Object,
       required: true,
-      default: {},
+      default: () => ({}),
     },
     details: {
       type: Object,
-      default: {},
-    },
-    frontHidden: {
-      type: Boolean,
-      default: false,
+      default: () => ({}),
     },
   },
   // apollo: {
   //   details: {
   //     query: QUERY_DETAIL,
   //     variables: {
-  //       "id": this.pokemon.id,
-  //       "name": this.pokemon.name,
+  //       id: this.pokemon.id,
+  //       name: this.pokemon.name,
   //     }
   //   },
   // },
-  methods: {
-    openDetails() {
-      this.frontHidden = true;
-    },
-  }
 });
 </script>
 
@@ -153,11 +141,23 @@ export default Vue.extend({
 $card-width: 280px;
 $card-height: 400px;
 
+.flipper {
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}
+
 .pokemon-card {
   display: flex;
   height: $card-height;
   margin: 15px;
+  perspective: 800px;
   position: relative;
+  transform-style: preserve-3d;
   width: $card-width;
 
   img {
@@ -165,12 +165,18 @@ $card-height: 400px;
     max-width: 100%;
   }
 
+  &-front, &-back {
+    backface-visibility: hidden;
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+
   &-front {
     background-image: radial-gradient(#ffffff, #dcdcdc);
     border: solid 1px #ccc;
     border-radius: 5px;
     height: $card-height;
-    transform: rotateY(0deg);
     width: $card-width;
     z-index: 2;
 
@@ -206,7 +212,7 @@ $card-height: 400px;
       flex-direction: column;
       max-height: 100px;
       justify-content: start;
-      padding: 20px;
+      padding: 24px 20px 23px;
       position: relative;
 
       &-tab {
@@ -256,7 +262,7 @@ $card-height: 400px;
 
     &-info {
       display: flex;
-      padding: 20px;
+      padding: 20px 20px 10px 20px;
 
       &-box {
         background: #efefef;
@@ -290,7 +296,7 @@ $card-height: 400px;
     }
 
     &-attack {
-      padding: 0 20px 20px;
+      padding: 0 20px 5px;
 
       &-header-title {
         font-family: 'Ubuntu', sans-serif;
@@ -311,15 +317,6 @@ $card-height: 400px;
     }
   }
 
-  &-front, &-back {
-    backface-visibility: hidden;
-    left: 0;
-    position: absolute;
-    top: 0;
-    transition: 0.6s;
-    transform-style: preserve-3d;
-  }
-
   &:hover {
     background-image: radial-gradient(#ffffff, #e8e8e8);
     margin-top: 12px;
@@ -337,20 +334,5 @@ $card-height: 400px;
       }
     }
   }
-}
-
-.flip-container {
-  perspective: 1000;
-  transform-style: preserve-3d;
-}
-
-.flipper {
-  transition: 0.6s;
-  transform-style: preserve-3d;
-  position: relative;
-}
-
-.flip {
-  transform: rotateY(180deg);
 }
 </style>
